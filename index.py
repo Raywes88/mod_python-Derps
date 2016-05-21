@@ -88,6 +88,8 @@ def info(req):
 
 '''
 Launches the transmission client as my user on the server.
+
+@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def torrentup(req):
    #needs to be run as 'usul' without pw some sudoers wizardry was required
@@ -98,6 +100,8 @@ def torrentup(req):
 
 '''
 Kills the transmission process, if it is running.
+
+@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def torrentdown(req):
    #Created a shell script to avoid giving the http user the ability
@@ -109,6 +113,8 @@ def torrentdown(req):
 
 '''
 Initiate RAID scrubbing
+
+@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def scrubpool(req):
    #This just runs 'echo check > /sys/block/md0/md/sync_action'
