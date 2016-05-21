@@ -1,5 +1,5 @@
 '''
-Any command that requires sudo have been added to /etc/sudoers to allow
+Any command that requires sudo has been added to /etc/sudoers to allow
 the http user to run them without authenticating. This _should_ be alright...
 You can't log in as the http user, and these commands are pretty harmless anyway.
 
