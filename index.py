@@ -88,40 +88,49 @@ def info(req):
 
 '''
 Launches the transmission client as my user on the server.
-
-@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def torrentup(req):
    #needs to be run as 'usul' without pw some sudoers wizardry was required
    command('sudo -u usul /usr/bin/transmission-daemon')
-   
-   #If we've gotten this far, render the main page and exit
-   return info(req)
+
+   #http boilerplate
+   req.content_type = 'text/html'
+   req.send_http_header()
+
+   #Redirect back to info page
+   req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
+   return apache.OK
 
 '''
 Kills the transmission process, if it is running.
-
-@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def torrentdown(req):
    #Created a shell script to avoid giving the http user the ability
    #to run killall without a pw. This just runs 'killall transmission-daemon'
    command('sudo ./home/usul/torrent_down.sh')
 
-   #If we've gotten this far, render the main page and exit
-   return info(req)
+   #http boilerplate
+   req.content_type = 'text/html'
+   req.send_http_header()
 
+   #Redirect back to info page
+   req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
+   return apache.OK
+   
 '''
 Initiate RAID scrubbing
-
-@todo: Issue redirect to get back to info page instead of calling info() here.
 '''
 def scrubpool(req):
    #This just runs 'echo check > /sys/block/md0/md/sync_action'
    command('sudo ./home/usul/scrub_pool.sh')
+   
+   #http boilerplate
+   req.content_type = 'text/html'
+   req.send_http_header()
 
-   #If we've gotten this far, render the main page and exit
-   return info(req)
+   #Redirect back to info page
+   req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
+   return apache.OK
 
 '''
 Popen wrapper method for my own convenience.
@@ -163,5 +172,3 @@ def parseGET(args):
       herp = d.split('=')
       ret[herp[0]] = herp[1]
    return ret
-      
-   
