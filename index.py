@@ -87,12 +87,9 @@ def info(req):
    return apache.OK
 
 '''
-Launches the transmission client as my user on the server.
+Render a page that just redirects to /info
 '''
-def torrentup(req):
-   #needs to be run as 'usul' without pw some sudoers wizardry was required
-   command('sudo -u usul /usr/bin/transmission-daemon')
-
+def redirect(req):
    #http boilerplate
    req.content_type = 'text/html'
    req.send_http_header()
@@ -100,6 +97,14 @@ def torrentup(req):
    #Redirect back to info page
    req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
    return apache.OK
+
+'''
+Launches the transmission client as my user on the server.
+'''
+def torrentup(req):
+   #needs to be run as 'usul' without pw some sudoers wizardry was required
+   command('sudo -u usul /usr/bin/transmission-daemon')
+   return redirect(req)
 
 '''
 Kills the transmission process, if it is running.
@@ -108,14 +113,7 @@ def torrentdown(req):
    #Created a shell script to avoid giving the http user the ability
    #to run killall without a pw. This just runs 'killall transmission-daemon'
    command('sudo ./home/usul/torrent_down.sh')
-
-   #http boilerplate
-   req.content_type = 'text/html'
-   req.send_http_header()
-
-   #Redirect back to info page
-   req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
-   return apache.OK
+   return redirect(req)
    
 '''
 Initiate RAID scrubbing
@@ -123,14 +121,7 @@ Initiate RAID scrubbing
 def scrubpool(req):
    #This just runs 'echo check > /sys/block/md0/md/sync_action'
    command('sudo ./home/usul/scrub_pool.sh')
-   
-   #http boilerplate
-   req.content_type = 'text/html'
-   req.send_http_header()
-
-   #Redirect back to info page
-   req.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=http://arrakis:50000/py_bin/index.py/info\" /></head></html>")
-   return apache.OK
+   return redirect(req)
 
 '''
 Popen wrapper method for my own convenience.
